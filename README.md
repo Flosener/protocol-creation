@@ -29,8 +29,9 @@ $ python main.py --audio PATH_TO_AUDIO_FILE --protocol PATH_TO_TEXT_FILE --summa
 - summarize: A boolean flag that indicates whether you want to summarize the text file as well, or just transcribe and diarize speakers.
 - token: Requires 'summarize' flag to be true. You have to specify a huggingface token as authorization if you want to use the Llama model.
 
-**Note:** If you want to use summarization you need a hugging face account, generate a token and request access to the Llama3.2 models on HF: https://huggingface.co/meta-llama/Llama-3.2-3B .
+**Note:** If you want to use summarization you need a hugging face account, generate a token and request access to the Llama3.2 models on HF: https://huggingface.co/meta-llama/Llama-3.2-3B . 
+Also, the inference on a local device (especially CPU) might take a while. Therefore, there is also a Python notebook file which can be used with Google Colab to utilize their GPU availability.
 
 ### Sources
-Transcription code: https://www.youtube.com/watch?v=MVW746z8y_I
+Transcription code: https://www.youtube.com/watch?v=MVW746z8y_I  
 Summarization code: https://www.youtube.com/watch?v=fc7cAP5zrOY
