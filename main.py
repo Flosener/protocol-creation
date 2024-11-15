@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 def main(audio=None, protocol=None, summarize=False, token=None):
 
   if audio:
-    transcriber = Transcriber(num_speakers=4, language='English', model_size='medium')
+    transcriber = Transcriber(num_speakers=2, language='English', model_size='medium')
     result, duration = transcriber.transcribe(audio)
     segments = result['segments']
     embeddings = transcriber.generate_embeddings(segments, duration, audio)

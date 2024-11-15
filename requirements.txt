@@ -1,5 +1,5 @@
 # Transcription & Diarization (transcribe.py)
-git+https://github.com/openai/whisper.git
+openai-whisper
 pyannote.audio
 pyannote.core
 pydub

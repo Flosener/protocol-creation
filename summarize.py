@@ -52,23 +52,23 @@ class Summarizer:
       torch_dtype=torch.bfloat16,
       trust_remote_code=True,
       device_map="auto",
-      max_length=1000,
+      max_new_tokens=500,
       truncation=True,
       do_sample=True,
       top_k=10,
-      #top_p=0.9,
+      top_p=0.9, # default: None
       num_return_sequences=1,
       eos_token_id=self.tokenizer.eos_token_id
     )
 
-    self.llm = HuggingFacePipeline(pipeline=self.pipeline, model_kwargs={'temperature': 0}) # 0.7-0.9
-
+    self.llm = HuggingFacePipeline(pipeline=self.pipeline, model_kwargs={'temperature': 0.9}) # default: 0.0
+    self.delimiter = "```"
     self.template = \
     """
-    Write a detailed summary of the important content discussed by the attendees of the meeting.
-    Include at least 5 bullet points covering all significant points.
-    ```{text}```
-    BULLET POINT SUMMARY:
+    Write a summary of the important content of the meeting protocol below.
+    Include at least 10 bullet points covering all significant points.
+    {self.delimiter + text + self.delimiter}
+    BULLET POINTS SUMMARY:
     """
     
     self.prompt = PromptTemplate(template=self.template, input_variables=["text"])
@@ -85,8 +85,14 @@ class Summarizer:
 
 
   def save_summary(self, summary, path):
+    # Find the index of the first triple backtick and the last triple backtick
+    start_index = summary.find(self.delimiter)
+    end_index = summary.find(self.delimiter)
+
+    # Extract the portion of the summary after the closing backticks
+    cleaned_summary = summary[:start_index] + summary[end_index+len(self.delimiter):].strip()
     with open(path, 'r') as file:
       original = file.read()
     with open(path, 'w') as file:
-      file.write('--- SUMMARY ---\nPrompt:\n' + summary + '\n---------------\n\n' + original)
+      file.write('--- SUMMARY ---\nPrompt:\n' + cleaned_summary + '\n---------------\n\n' + original)
     print('Saved summary.')
